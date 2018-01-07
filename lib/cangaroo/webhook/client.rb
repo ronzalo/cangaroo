@@ -48,7 +48,7 @@ module Cangaroo
           'X_HUB_TOKEN' => connection.token || '',
           'Content-Type' => 'application/json',
           'Accept' => 'application/json'
-        }
+        }.merge(@connection.headers)
       end
 
       def body(payload, request_id, parameters)

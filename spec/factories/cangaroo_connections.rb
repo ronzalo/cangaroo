@@ -5,6 +5,7 @@ FactoryGirl.define do
     name :store
     url 'www.store.com'
     parameters { { first: 'first', second: 'second' } }
+    headers { { "Some-Header" => 'first', "Custom-Token" => 'second' } }
     key { SecureRandom.hex }
     token { SecureRandom.hex }
 
