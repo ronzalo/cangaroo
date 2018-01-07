@@ -17,7 +17,7 @@ module Cangaroo
     private
 
     def handle_error(exception)
-      raise(exception) if Rails.env.development?
+      raise(exception) if Rails.env.development? || exception.is_a?(ActionController::UnknownFormat)
       render json: { error: 'Something went wrong!' }, status: 500
     end
 
@@ -33,7 +33,7 @@ module Cangaroo
     def ensure_json_request
       return if request.headers['Content-Type'] == 'application/json'
 
-      render nothing: true, status: 406
+      raise ActionController::UnknownFormat
     end
 
     def key

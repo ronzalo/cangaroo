@@ -12,19 +12,19 @@ module Cangaroo
 
     context 'when wombat authentication is enabled' do
       describe '#create' do
-        before do
-          post endpoint_index_path, params: request_payload, headers: headers
-        end
-
-        it 'accepts only application/json requests' do
-          expect(response.status).to eq(202)
-
-          headers['Content-Type'] = 'text/html'
-          post endpoint_index_path, params: {}, headers: headers
-          expect(response.status).to eq(406)
+        context 'when request is not application/json' do
+          it 'rejects the request' do
+            headers['Content-Type'] = 'text/html'
+            post endpoint_index_path, params: request_payload, headers: headers
+            expect(response.status).to eq(406)
+          end
         end
 
         context 'when success' do
+          before do
+            post endpoint_index_path, params: request_payload, headers: headers
+          end
+
           it 'responds with 200' do
             expect(response.status).to eq(202)
           end
@@ -53,7 +53,7 @@ module Cangaroo
 
         context 'when an exception was raised' do
           before do
-            HandleRequest.stub(:call).and_raise('An error')
+            allow(HandleRequest).to receive(:call).and_raise('An error')
             post endpoint_index_path, params: request_payload, headers: headers
           end
 
