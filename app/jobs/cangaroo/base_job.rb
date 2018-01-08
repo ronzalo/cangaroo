@@ -5,6 +5,7 @@ module Cangaroo
     class_configuration :connection
     class_configuration :path, ''
     class_configuration :parameters, {}
+    class_configuration :headers, {}
     class_configuration :process_response, true
 
     protected
